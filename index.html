@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="sk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+  <meta name="theme-color" content="#101813">
+  <title>PLANETÁRNY RUBÁR — Frontier Forestry</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="game-shell">
+    <canvas id="world" aria-label="Herný svet"></canvas>
+    <div class="vignette"></div>
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Frontier Forestry"><span class="brand-mark">F<span>F</span></span><span class="brand-name">FRONTIER<span>FORESTRY</span></span></a>
+      <div class="mission"><span class="live-dot"></span><span>EXPEDÍCIA <b>01</b></span><i></i><span id="biomeLabel">ZELENÁ ZÓNA</span></div>
+      <button class="icon-btn" id="soundBtn" aria-label="Zvuk" title="Zvuk">◖))</button>
+    </header>
+    <section class="hud-left">
+      <div class="stat-card money-card"><div class="stat-label"><span class="tiny-icon coin">¢</span> ZÁROBOK</div><div class="money-line"><span class="currency">$</span><strong id="cash">0</strong><span class="cash-gain" id="cashGain"></span></div><div class="stat-foot">CELOŽIVOTNÝ VÝNOS <b id="totalCash">$0</b></div></div>
+      <div class="stat-card objective-card"><div class="stat-label">STAV PLANÉTY <span class="target-count" id="treeCount">0 / 0</span></div><div class="progress-track"><div id="planetProgress"></div></div><div class="stat-foot"><span id="planetStatus">BIÓM 01 · STARÝ LES</span><span id="progressText">0%</span></div></div>
+      <div class="stat-card tool-card"><div class="tool-icon" id="toolIcon">♜</div><div><div class="stat-label">VYBAVENIE</div><strong id="toolName">POĽNÁ SEKERA</strong><div class="tool-sub" id="toolSub">Základná výbava</div></div><span class="tool-level" id="toolLevel">01</span></div>
+      <button class="shop-btn" id="shopBtn"><span>↗</span><b>DIELŇA VYBAVENIA</b><small>VYLEPŠIŤ NÁSTROJ</small><i>U</i></button>
+    </section>
+    <section class="hud-right">
+      <div class="weather"><span class="weather-icon">☀</span><div><b>POČASIE</b><span>JASNÁ OBLOHA</span></div><i></i><div class="wind"><span>VIETOR</span><b>3 <small>KM/H</small></b></div></div>
+      <div class="mini-map"><div class="map-top"><span>SEKTOR <b id="sectorName">A-01</b></span><span class="map-north">N ↑</span></div><div class="map-grid" id="mapGrid"></div><div class="map-bottom"><span><i class="legend-tree"></i>STROMY</span><span><i class="legend-you"></i>TY</span></div></div>
+    </section>
+    <div class="center-reticle" id="reticle"><span></span><i></i></div>
+    <div class="target-readout" id="targetReadout"><span class="target-type">CIEĽ V DOSAHU</span><b id="targetName">Smrekovec</b><div class="target-hp"><span id="targetHp"></span></div><small id="targetDurability">ODOLNOSŤ 100%</small></div>
+    <div class="interaction-prompt" id="interaction"><span class="key">E</span><span>RÚBAŤ STROM</span><span class="prompt-divider">·</span><span id="hitHint">podrž pre rýchlejšie</span></div>
+    <div class="tool-swing" id="swingFx"><div class="swing-label">+<span id="woodGain">12</span> KMEŇA</div></div>
+    <div class="bottom-left"><span class="coord-icon">⌖</span><span id="coords">SÚRADNICE&nbsp; 00° 00′ N</span><span class="separator">/</span><span id="woodCount">0 KMEŇA</span></div>
+    <div class="bottom-right"><span class="key">W</span><span class="key">A</span><span class="key">S</span><span class="key">D</span><span class="control-label">POHYB</span><span class="key mouse-key">M</span><span class="control-label">RÚBAŤ</span></div>
+    <div class="chop-meter" id="chopMeter"><div class="chop-meter-top"><span id="chopMeterName">STROM</span><span id="chopPercent">0%</span></div><div class="meter-track"><i id="chopMeterFill"></i></div></div>
+    <div class="toast" id="toast"></div>
+    <div class="mobile-controls" id="mobileControls"><div class="joystick" id="joystick"><span></span><b></b></div><button class="mobile-action" id="mobileChop">RÚBAŤ</button><div class="look-pad" id="lookPad"><span>POHĽAD</span><i>⤢</i></div></div>
+    <div class="modal-backdrop" id="modalBackdrop">
+      <section class="intro-modal" id="introModal">
+        <div class="modal-tag"><span></span> FRONTIER FORESTRY · TERÉNNA PRÍRUČKA</div>
+        <div class="modal-head"><div><p>PRVÁ EXPEDÍCIA · SEKTOR A-01</p><h1>Planéta je<br><em>na rúbanie.</em></h1></div><div class="planet-art"><div class="planet-ring"></div><div class="planet"><span>♣</span></div></div></div>
+        <p class="intro-copy">Vitaj na poslednej zalesnenej planéte v galaxii. Každý strom je surovina, každý výrub ťa posúva bližšie k lepšiemu vybaveniu. Začni sekerou. Zvyšok je na tebe.</p>
+        <div class="starter-stats"><div><span>STROMOV NA PLANÉTE</span><b>120 <small>ks</small></b></div><div><span>ŠTARTOVNÝ KAPITÁL</span><b>$<span id="startingCash">85</span></b></div><div><span>PRVÝ NÁSTROJ</span><b>SEKERA</b></div></div>
+        <div class="modal-actions"><button class="primary-btn" id="startBtn">ZAČAŤ EXPEDÍCIU <span>↗</span></button><span class="modal-note">WASD pohyb <i>·</i> myš rozhľad <i>·</i> E / klik rúbať</span></div>
+      </section>
+      <section class="upgrade-modal hidden" id="upgradeModal">
+        <button class="close-modal" id="closeUpgrade">×</button><div class="modal-tag"><span></span> TERÉNNA DIELŇA · AKTUALIZÁCIA</div><p class="upgrade-kicker">NOVÁ VÝBAVA ODOMKNUTÁ</p><div class="upgrade-art" id="upgradeArt">⚙</div><h2 id="upgradeTitle">REŤAZOVÁ PÍLA</h2><p id="upgradeDescription">Poradí si aj s najodolnejším drevom.</p><div class="upgrade-stats"><span>RÝCHLOSŤ <b id="upgradeSpeed">×4</b></span><span>HODNOTA <b>+25%</b></span></div><button class="primary-btn" id="equipBtn">VYBAVIŤ <span>↗</span></button></section>
+      <section class="win-modal hidden" id="winModal"><div class="modal-tag"><span></span> EXPEDÍCIA DOKONČENÁ</div><div class="win-icon">✦</div><h2>PLANÉTA<br><em>VYČISTENÁ.</em></h2><p>120 stromov. Jeden neúnavný drevorubač.<br>Ďalšia planéta už čaká.</p><div class="win-earnings">CELKOVÝ ZÁROBOK <b id="finalCash">$0</b></div><button class="primary-btn" id="restartBtn">NOVA EXPEDÍCIA <span>↗</span></button></section>
+    </div>
+    <div class="level-toast" id="levelToast"><span>✦</span><div><b>NOVÝ NÁSTROJ ODOMKNUTÝ</b><small id="levelToastName">REŤAZOVÁ PÍLA</small></div></div>
+  </main>
+  <script src="game.js"></script>
+</body>
+</html>
